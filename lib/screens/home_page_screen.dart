@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:selfcare_app/data/category_data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:selfcare_app/models/category.dart';
+import 'package:selfcare_app/providers/category_provider.dart';
 import 'package:selfcare_app/widgets/category_card.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final List<Category> category = ref.watch(categoryProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -42,16 +45,16 @@ class _HomePageState extends State<HomePage> {
                 height: screenHeight * 0.015,
               ),
               Row(
-                children: category_data.map((item) {
+                children: category.map((item) {
                   return Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 4),
-                      child: CategoryWidget(item: item, length: category_data.length,),
+                      child: CategoryWidget(item: item, length: category.length,),
                     )
                   );
                 }).toList(),
               ),
-              Spacer()
+              const Spacer()
             ],
           ),
         ),
