@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:selfcare_app/screens/home_page_screen.dart';
+import 'package:selfcare_app/config/route_config.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Selfcare App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
           primary: Color.fromRGBO(255, 174, 209, 1)
         )
       ),
-      home: const HomePage(),
+      routerConfig: router,
     );
   }
 }
