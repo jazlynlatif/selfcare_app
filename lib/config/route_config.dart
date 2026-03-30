@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:selfcare_app/screens/home_page_screen.dart';
-import 'package:selfcare_app/screens/specific_care_screen.dart';
+import 'package:selfcare_app/pages/home_page.dart';
+import 'package:selfcare_app/pages/category_product_page.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -15,7 +15,7 @@ final GoRouter router = GoRouter(
       path: '/category/:id',
       builder: (context, state) {
         final id = state.pathParameters['id']!;
-        return SpecificCarePage(care: int.parse(id));
+        return CategoryProductPage(care: int.parse(id));
       }
     )
   ]

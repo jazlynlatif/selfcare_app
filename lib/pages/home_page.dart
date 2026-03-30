@@ -54,7 +54,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 4),
-                        child: CategoryWidget(item: item.$2, length: category.length,),
+                        child: CategoryWidget(length: category.length,index: item.$1,),
                       ),
                     )
                   );

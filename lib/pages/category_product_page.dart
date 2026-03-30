@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:selfcare_app/models/category.dart';
 
-class SpecificCarePage extends StatefulWidget {
+class CategoryProductPage extends StatefulWidget {
   final int care;
-  const SpecificCarePage({
+  const CategoryProductPage({
     super.key,
     required this.care
   });
 
   @override
-  State<SpecificCarePage> createState() => _SpecificCarePageState();
+  State<CategoryProductPage> createState() => _CategoryProductPageState();
 }
 
-class _SpecificCarePageState extends State<SpecificCarePage> {
+class _CategoryProductPageState extends State<CategoryProductPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
