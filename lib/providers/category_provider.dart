@@ -4,6 +4,6 @@ import 'package:selfcare_app/models/category.dart';
 
 final categoryProvider = Provider<List<Category>>(
   (ref) {
-    return category_data;
+    return categoryData;
   }
 );

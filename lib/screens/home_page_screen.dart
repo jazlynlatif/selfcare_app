@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:selfcare_app/models/category.dart';
 import 'package:selfcare_app/providers/category_provider.dart';
 import 'package:selfcare_app/widgets/category_card.dart';
@@ -45,11 +46,16 @@ class _HomePageState extends ConsumerState<HomePage> {
                 height: screenHeight * 0.015,
               ),
               Row(
-                children: category.map((item) {
+                children: category.indexed.map((item) {
                   return Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4),
-                      child: CategoryWidget(item: item, length: category.length,),
+                    child: GestureDetector(
+                      onTap: () {
+                        context.push('/category/${item.$1}');
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4),
+                        child: CategoryWidget(item: item.$2, length: category.length,),
+                      ),
                     )
                   );
                 }).toList(),

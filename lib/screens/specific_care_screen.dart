@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:selfcare_app/models/category.dart';
 
 class SpecificCarePage extends StatefulWidget {
-  final Category care;
+  final int care;
   const SpecificCarePage({
     super.key,
     required this.care
@@ -15,9 +15,13 @@ class SpecificCarePage extends StatefulWidget {
 class _SpecificCarePageState extends State<SpecificCarePage> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Face Care'),
+        title: Text(
+          'Face Care',
+          style: theme.textTheme.titleMedium,
+        ),
       ),
       body: SafeArea(
         child: Padding(
