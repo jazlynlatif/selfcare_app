@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:selfcare_app/models/category.dart';
 import 'package:selfcare_app/providers/category_provider.dart';
 
-class CategoryWidget extends ConsumerWidget {
+class CategoryCard extends ConsumerWidget {
   final int index;
   final int length;
-  const CategoryWidget({
+  const CategoryCard({
     super.key,
     required this.index,
     required this.length
