@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:selfcare_app/models/category.dart';
+import 'package:selfcare_app/models/category_model.dart';
 import 'package:selfcare_app/providers/category_provider.dart';
 
 class CategoryCard extends ConsumerWidget {

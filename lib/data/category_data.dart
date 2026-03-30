@@ -1,4 +1,4 @@
-import 'package:selfcare_app/models/category.dart';
+import 'package:selfcare_app/models/category_model.dart';
 
 final List<Category> categoryData = [
   Category(id: 1,title: 'Face Care', image_path: 'assets/images/face_care_icon.png'),
