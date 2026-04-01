@@ -15,7 +15,7 @@ final GoRouter router = GoRouter(
       path: '/category/:id',
       builder: (context, state) {
         final id = state.pathParameters['id']!;
-        return CategoryProductPage(care: int.parse(id));
+        return CategoryProductPage(careId: int.parse(id));
       }
     )
   ]

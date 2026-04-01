@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:selfcare_app/models/category_model.dart';
 
 class CategoryProductPage extends StatefulWidget {
-  final int care;
+  final int careId;
   const CategoryProductPage({
     super.key,
-    required this.care
+    required this.careId
   });
 
   @override

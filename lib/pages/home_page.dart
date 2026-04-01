@@ -50,7 +50,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   return Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        context.push('/category/${item.$1}');
+                        context.push('/category/${item.$2.id}');
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 4),
