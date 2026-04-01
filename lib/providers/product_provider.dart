@@ -16,7 +16,7 @@ final productProvider = Provider<List<Product>>(
 
 final productTypeProvider = Provider.family<List<ProductType>, int> (
   (ref, catId) {
-    return productTypeData.where((type) => type.categoryId == catId).toList();
+    return catId == 0 ? productTypeData : productTypeData.where((type) => type.categoryId == catId).toList();
   }
 );
 
@@ -29,13 +29,13 @@ final productSizeUnitProvider = Provider<List<SizeUnit>> (
 final productCatProvider = Provider.family<List<ViewProduct>, int> (
   (ref, catId) {
     final rawData = ref.watch(productProvider);
-    final rawCatData = rawData.where((product) => product.categoryId == catId).toList();
+    final rawCatData = catId != 0 ? rawData.where((product) => product.categoryId == catId).toList() : rawData;
     final productCategory = ref.watch(categoryProvider);
     final productTypeData = ref.watch(productTypeProvider(catId));
     final productSizeUnitData = ref.watch(productSizeUnitProvider);
 
     final finalData = rawCatData.map((product) {
-      final category = productCategory.firstWhere((cat) => cat.id == catId); // change to product.catId when cat "All" id is sorted
+      final category = productCategory.firstWhere((cat) => cat.id == product.categoryId); // change to product.catId when cat "All" id is sorted
       final type = productTypeData.firstWhere((type) => type.id == product.typeId);
       final sizeUnit = productSizeUnitData.firstWhere((unit) => unit.id == product.sizeUnitId);
       return ViewProduct(
