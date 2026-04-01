@@ -7,3 +7,10 @@ final categoryProvider = Provider<List<Category>>(
     return categoryData;
   }
 );
+
+final categoryItemProvider = Provider.family<Category, int>(
+  (ref, id) {
+    final all = ref.watch(categoryProvider);
+    return all.firstWhere((cat) => cat.id ==id);
+  }
+);

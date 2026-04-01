@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:selfcare_app/models/category_model.dart';
+import 'package:selfcare_app/providers/category_provider.dart';
 
-class CategoryProductPage extends StatefulWidget {
+class CategoryProductPage extends ConsumerStatefulWidget {
   final int careId;
   const CategoryProductPage({
     super.key,
@@ -9,17 +11,18 @@ class CategoryProductPage extends StatefulWidget {
   });
 
   @override
-  State<CategoryProductPage> createState() => _CategoryProductPageState();
+  ConsumerState<CategoryProductPage> createState() => _CategoryProductPageState();
 }
 
-class _CategoryProductPageState extends State<CategoryProductPage> {
+class _CategoryProductPageState extends ConsumerState<CategoryProductPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final catData = ref.watch(categoryItemProvider(widget.careId));
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Face Care',
+          catData.title,
           style: theme.textTheme.titleMedium,
         ),
       ),
