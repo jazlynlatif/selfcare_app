@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
-
 class Product {
   final int id;
   final int categoryId;
   final String name;
-  final double size;
+  final int size;
   final int sizeUnitId;
   final int typeId;
 
