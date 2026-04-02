@@ -20,7 +20,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
     final product = widget.product;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 17),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       width: double.infinity,
       decoration: BoxDecoration(
         color: Color.fromRGBO(255, 255, 255, 1),
@@ -39,7 +39,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
               children: [
                 Text(
                   product.product.name,
-                  style: theme.textTheme.titleMedium?.copyWith(
+                  style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold
                   ),
                   maxLines: 1,
