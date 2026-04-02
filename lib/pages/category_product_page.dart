@@ -68,6 +68,16 @@ class _CategoryProductPageState extends ConsumerState<CategoryProductPage> {
           ),
         )
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        heroTag: 'add_product_fab',
+        backgroundColor: theme.colorScheme.primary,
+        shape: const CircleBorder(),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
