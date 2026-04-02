@@ -25,9 +25,30 @@ class _CategoryProductPageState extends ConsumerState<CategoryProductPage> {
     final List<ViewProduct> productList = ref.watch(productCatProvider(careId));
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          catData.title,
-          style: theme.textTheme.titleMedium,
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              catData.title,
+              style: theme.textTheme.titleMedium,
+            ),
+            const SizedBox(
+              width: 3,
+            ),
+            Container(
+              padding: EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary,
+                shape: BoxShape.circle
+              ),
+              child: Text(
+                productList.length.toString(),
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            )
+          ],
         ),
       ),
       body: SafeArea(
