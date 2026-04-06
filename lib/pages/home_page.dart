@@ -46,15 +46,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                 height: screenHeight * 0.015,
               ),
               Row(
-                children: category.indexed.map((item) {
+                children: category.map((cat) {
                   return Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        context.push('/category/${item.$2.id}');
+                        context.push('/category/${cat.id}');
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 4),
-                        child: CategoryCard(length: category.length,index: item.$1,),
+                        child: CategoryCard(category: cat, length: category.length),
                       ),
                     )
                   );

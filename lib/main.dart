@@ -13,18 +13,40 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const _mainColor = Color.fromRGBO(255, 174, 209, 1);
     return MaterialApp.router(
       title: 'Selfcare App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Color.fromRGBO(255, 174, 209, 1),
-          primary: Color.fromRGBO(255, 174, 209, 1)
+          seedColor: _mainColor,
+          primary: _mainColor
         ),
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: Color.fromRGBO(141, 141, 141, 1),
+            fontWeight: FontWeight.normal
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: BorderSide(
+              color: Colors.black,
+              width: 1
+            )
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: BorderSide(
+              color: _mainColor,
+              width: 2
+            )
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         )
       ),
       routerConfig: router,

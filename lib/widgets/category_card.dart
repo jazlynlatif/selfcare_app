@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:selfcare_app/models/category_model.dart';
-import 'package:selfcare_app/providers/category_provider.dart';
 
 class CategoryCard extends ConsumerWidget {
-  final int index;
+  final Category category;
   final int length;
+  final bool? nonColor;
   const CategoryCard({
     super.key,
-    required this.index,
-    required this.length
+    required this.category,
+    required this.length,
+    this.nonColor
   });
 
   @override
   Widget build(BuildContext context, ref) {
     final theme = Theme.of(context);
     final screenHeight = MediaQuery.of(context).size.height;
-    final List<Category> category = ref.watch(categoryProvider);
+    // final List<Category> category = ref.watch(categoryProvider);
     return Container(
       padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 4),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary,
-        borderRadius: BorderRadius.circular(10)
+        color: nonColor == null ? theme.colorScheme.primary : Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          width: 1,
+          color: nonColor == null ? theme.colorScheme.primary : Colors.black
+        )
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,7 +38,7 @@ class CategoryCard extends ConsumerWidget {
             child: SizedBox(
               height: screenHeight * 0.04,
               child: Image.asset(
-                category[index].image_path,
+                category.image_path,
                 fit: BoxFit.cover,
               ),
             ),
@@ -41,7 +46,7 @@ class CategoryCard extends ConsumerWidget {
           FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              category[index].title,
+              category.title,
               style: theme.textTheme.labelSmall,
             ),
           ),

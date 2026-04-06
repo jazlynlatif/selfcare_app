@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:selfcare_app/models/view_product_model.dart';
 import 'package:selfcare_app/providers/category_provider.dart';
 import 'package:selfcare_app/providers/product_provider.dart';
@@ -69,7 +70,9 @@ class _CategoryProductPageState extends ConsumerState<CategoryProductPage> {
         )
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.push('/product-form', extra: null);
+        },
         heroTag: 'add_product_fab',
         backgroundColor: theme.colorScheme.primary,
         shape: const CircleBorder(),
