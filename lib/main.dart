@@ -46,6 +46,20 @@ class MyApp extends StatelessWidget {
               width: 2
             )
           ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: BorderSide(
+              color: const Color.fromRGBO(255, 0, 0, 1),
+              width: 1
+            )
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+            borderSide: BorderSide(
+              color: const Color.fromRGBO(255, 0, 0, 1),
+              width: 1
+            )
+          ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         )
       ),

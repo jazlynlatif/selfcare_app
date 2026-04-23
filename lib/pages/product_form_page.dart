@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:selfcare_app/models/view_product_model.dart';
+import 'package:selfcare_app/notifiers/product_form_notifier.dart';
 import 'package:selfcare_app/providers/category_provider.dart';
 import 'package:selfcare_app/providers/product_provider.dart';
 import 'package:selfcare_app/widgets/category_card.dart';
@@ -19,12 +20,12 @@ class ProductForm extends ConsumerStatefulWidget {
 }
 
 class _ProductFormState extends ConsumerState<ProductForm> {
-    // Text Editing Controller
-  final TextEditingController _productName = TextEditingController();
-  final TextEditingController _productSize = TextEditingController();
-  final TextEditingController _productSizeUnit = TextEditingController();
-  final TextEditingController _productType = TextEditingController();
   late var currentCategory;
+  // Text Controllers for Text Fields
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _typeController = TextEditingController();
+  final TextEditingController _sizeController = TextEditingController();
+  final TextEditingController _unitController = TextEditingController();
 
   @override
   void initState() {
@@ -35,18 +36,24 @@ class _ProductFormState extends ConsumerState<ProductForm> {
 
   @override
   void dispose() {
-    _productName.dispose();
-    _productSize.dispose();
-    _productSizeUnit.dispose();
-    _productType.dispose();
+    _nameController.dispose();
+    _typeController.dispose();
+    _sizeController.dispose();
+    _unitController.dispose();
     super.dispose();
+  }
+
+  void _clearForm() {
+    _nameController.clear();
+    _typeController.clear();
+    _sizeController.clear();
+    _unitController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     // Form Data
-    final _formKey = GlobalKey<FormState>();
     final formFieldTitle = theme.textTheme.titleSmall?.copyWith(
       fontWeight: FontWeight.bold
     );
@@ -56,6 +63,17 @@ class _ProductFormState extends ConsumerState<ProductForm> {
     final unitSizes = ref.watch(productSizeUnitProvider);
     // Screen Size Data
     final screenWidth = MediaQuery.of(context).size.width;
+    // Form State
+    final formState = ref.watch(productFormController);
+    final formAction = ref.read(productFormController.notifier);
+    // Error Style
+    const invisibleErrorStyle = TextStyle(color: Colors.transparent, fontSize: 0);
+    // Form Clear
+    ref.listen(productFormController, (previous, next) {
+      if(next.isInitial && previous != null && !previous.isInitial) {
+        _clearForm();
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -69,7 +87,7 @@ class _ProductFormState extends ConsumerState<ProductForm> {
           child: Column(
             children: [
               Form(
-                key: _formKey,
+                // key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -81,19 +99,22 @@ class _ProductFormState extends ConsumerState<ProductForm> {
                       height: 5,
                     ),
                     TextFormField(
-                      controller: _productName,
                       style: theme.textTheme.bodySmall,
                       decoration: InputDecoration(
                         hint: Text(
                           'Product Name',
                           style: theme.inputDecorationTheme.hintStyle,
-                          ),
+                        ),
+                        errorText: formState.nameError,
                       ),
+                      controller: _nameController,
+                      onChanged: (value) => formAction.updateName(value),
                     ),
                     SizedBox(
                       height: 15,
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Column(
@@ -108,17 +129,27 @@ class _ProductFormState extends ConsumerState<ProductForm> {
                               ),
                               DropdownMenu(
                                 width: (screenWidth-20)/2,
-                                controller: _productType,
                                 textStyle: theme.textTheme.bodySmall,
                                 hintText: 'Product Type',
+                                //helperText: '',
+                                errorText: formState.typeError,
                                 inputDecorationTheme: InputDecorationTheme(
-                                  constraints: BoxConstraints.tight(Size.fromHeight(48)),
+                                  constraints: BoxConstraints(
+                                    minHeight: 48,
+                                    maxHeight: formState.typeError == null ? 48 : 68,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                 ),
+                                controller: _typeController,
+                                onSelected: (value) { 
+                                  if(value != null) formAction.selectType(value);
+                                },
                                 dropdownMenuEntries: [
                                   for(var type in productTypes) 
                                     DropdownMenuEntry(
                                       label: type.name,
-                                      value: type
+                                      value: type.id
                                     )
                                 ]
                               )
@@ -143,52 +174,62 @@ class _ProductFormState extends ConsumerState<ProductForm> {
                                 children: [
                                   Expanded(
                                     child: TextFormField(
-                                      controller: _productSize,
                                       keyboardType: TextInputType.number,
                                       inputFormatters: [
                                         FilteringTextInputFormatter.digitsOnly
                                       ],
                                       style: theme.textTheme.bodySmall,
+                                      onChanged: (value) => formAction.updateSize(value),
+                                      controller: _sizeController,
                                       decoration: InputDecoration(
                                         hint: Text(
                                           'Size',
                                           style: theme.inputDecorationTheme.hintStyle,
-                                        )
+                                        ),
+                                        errorText: formState.sizeError,
+                                        errorStyle: invisibleErrorStyle
                                       ),
                                     ),
                                   ),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  // SizedBox(
-                                  //   width: 65,
-                                  //   child: TextFormField(
-                                  //     decoration: InputDecoration(
-                                  //       hint: Text(
-                                  //         'Unit',
-                                  //         style: theme.inputDecorationTheme.hintStyle,
-                                  //       )
-                                  //     ),
-                                  //   )
-                                  // )
                                   DropdownMenu(
-                                    controller: _productSizeUnit,
                                     width: 100,
                                     textStyle: theme.textTheme.bodySmall,
                                     hintText: 'Unit',
+                                    errorText: formState.sizeUnitError,
                                     inputDecorationTheme: InputDecorationTheme(
-                                      constraints: BoxConstraints.tight(Size.fromHeight(48)),
+                                      constraints: BoxConstraints(
+                                        minHeight: 48,
+                                        maxHeight: 48,
+                                      ),
+                                      errorStyle: invisibleErrorStyle,
                                     ),
+                                    controller: _unitController,
+                                    onSelected: (value) {
+                                      if(value != null) formAction.selectSizeUnit(value);
+                                    },
                                     dropdownMenuEntries: [
                                       for(var unit in unitSizes)
                                       DropdownMenuEntry(
                                         label: unit.name, 
-                                        value: unit
+                                        value: unit.id
                                       )
                                     ]
                                   )
                                 ],
-                              )
+                              ),
+                              if(formState.sizeError != null || formState.sizeUnitError != null)
+                                Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: Text(
+                                    formState.sizeError ?? formState.sizeUnitError ?? '',
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.error
+                                    ),
+                                  ),
+                                )
                             ],
                           )
                         )
@@ -209,6 +250,7 @@ class _ProductFormState extends ConsumerState<ProductForm> {
                         return Expanded(
                           child: GestureDetector(
                             onTap: () {
+                              formAction.selectCategory(cat.id);
                               setState(() {
                                 currentCategory = cat.id;
                               });
@@ -221,13 +263,29 @@ class _ProductFormState extends ConsumerState<ProductForm> {
                           )
                         );
                       }).toList(),
+                    ),
+                    if(formState.categoryError != null) 
+                    Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: Text(
+                        formState.categoryError ?? '',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.error
+                        ),
+                      ),
                     )
                   ],
                 )
               ),
               Spacer(),
               ElevatedButton(
-                onPressed: () {}, 
+                onPressed: () async {
+                  try {
+                    if(!formState.isSubmitting) {
+                      formAction.submit();
+                    }
+                  } catch (er) {}
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.colorScheme.primary,
                   minimumSize: Size(double.infinity, 45),
@@ -235,7 +293,9 @@ class _ProductFormState extends ConsumerState<ProductForm> {
                     borderRadius: BorderRadius.circular(5)
                   )
                 ),
-                child: Text(
+                child: formState.isSubmitting
+                ? CircularProgressIndicator()
+                :Text(
                   'Add Product',
                   style: TextStyle(
                     color: const Color.fromRGBO(0, 0, 0, 1),
