@@ -251,14 +251,11 @@ class _ProductFormState extends ConsumerState<ProductForm> {
                           child: GestureDetector(
                             onTap: () {
                               formAction.selectCategory(cat.id);
-                              setState(() {
-                                currentCategory = cat.id;
-                              });
                             },
                             child: CategoryCard(
                               category: cat,
                               length: categories.length,
-                              nonColor : currentCategory == cat.id ? null : true
+                              nonColor : formState.categoryId == cat.id ? null : true
                             ),
                           )
                         );

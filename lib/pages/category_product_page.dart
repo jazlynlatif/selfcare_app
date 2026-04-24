@@ -36,7 +36,7 @@ class _CategoryProductPageState extends ConsumerState<CategoryProductPage> {
             const SizedBox(
               width: 3,
             ),
-            Container(
+            if(productList.isNotEmpty) Container(
               padding: EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary,
@@ -53,7 +53,53 @@ class _CategoryProductPageState extends ConsumerState<CategoryProductPage> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
+        child: productList.isEmpty 
+        ? Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/skincare.png',
+                width: 200,
+              ),
+              Text(
+                'You Currently Have \nNo Products',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Let's add your products now!"
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  context.push('/product-form', extra: null);
+                }, 
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)
+                  ),
+                  backgroundColor: theme.colorScheme.primary
+                ),
+                child: Text(
+                  'Add Your Product',
+                  style: TextStyle(
+                    color: const Color.fromRGBO(0, 0, 0, 1),
+                    fontWeight: FontWeight.bold
+                  ),
+                )
+              )
+            ],
+          ),
+        )
+        : Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
