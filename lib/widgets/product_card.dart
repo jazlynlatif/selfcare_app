@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:selfcare_app/models/view_product_model.dart';
+import 'package:selfcare_app/notifiers/product_selection_notifier.dart';
 
 class ProductCard extends ConsumerStatefulWidget {
   final ViewProduct product;
@@ -18,53 +19,62 @@ class _ProductCardState extends ConsumerState<ProductCard> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final product = widget.product;
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(255, 255, 255, 1),
-        border: Border.all(
-          color: Color.fromRGBO(218, 218, 218, 1),
+    final isSelected = ref.watch(productSelectionController.select((ids) => ids.contains(product.product.id.toString())));
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      child: Ink(
+        decoration: BoxDecoration(
+          color: isSelected ? theme.colorScheme.primary : Color.fromRGBO(255, 255, 255, 1),
+          border: Border.all(
+            color: Color.fromRGBO(218, 218, 218, 1),
+          ),
+          borderRadius: BorderRadius.circular(5)
         ),
-        borderRadius: BorderRadius.circular(5)
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+        child: InkWell(
+          onLongPress: () {
+            ref.read(productSelectionController.notifier).toggleSelection(product.product.id.toString());
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  product.product.name,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        product.product.name,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        '${product.category} - ${product.type}',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          fontWeight: FontWeight.normal
+                        ),
+                      )
+                    ],
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(
+                  width: 15,
                 ),
                 Text(
-                  '${product.category} - ${product.type}',
+                  '${product.product.size}${product.sizeUnit}',
                   style: theme.textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.normal
+                    fontWeight: FontWeight.normal,
+                    color: Color.fromRGBO(141, 141, 141, 1)
                   ),
                 )
               ],
             ),
           ),
-          SizedBox(
-            width: 15,
-          ),
-          Text(
-            '${product.product.size}${product.sizeUnit}',
-            style: theme.textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.normal,
-              color: Color.fromRGBO(141, 141, 141, 1)
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
