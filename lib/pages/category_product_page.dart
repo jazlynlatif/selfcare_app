@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:selfcare_app/models/view_product_model.dart';
+import 'package:selfcare_app/notifiers/product_notifier.dart';
 import 'package:selfcare_app/notifiers/product_selection_notifier.dart';
 import 'package:selfcare_app/providers/category_provider.dart';
 import 'package:selfcare_app/providers/product_provider.dart';
@@ -19,6 +20,14 @@ class CategoryProductPage extends ConsumerStatefulWidget {
 }
 
 class _CategoryProductPageState extends ConsumerState<CategoryProductPage> {
+  void deleteSelectedProduct() {
+    final selectedIds = ref.read(productSelectionController);
+
+    ref.read(productController.notifier).deleteProducts(selectedIds);
+
+    ref.read(productSelectionController.notifier).clearSelection();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -52,6 +61,15 @@ class _CategoryProductPageState extends ConsumerState<CategoryProductPage> {
             )
           ],
         ),
+        actions: [
+          if(ref.watch(productSelectionController).isNotEmpty) 
+          IconButton(
+            onPressed: () {
+              deleteSelectedProduct();
+            }, 
+            icon: Icon(Icons.delete)
+          )
+        ],
       ),
       body: SafeArea(
         child: productList.isEmpty 
