@@ -13,6 +13,12 @@ class ProductNotifier extends Notifier<List<Product>> {
 
     //API
   }
+
+  void addProducts(Product toAdd) {
+    state = [...state, toAdd];
+
+    //API
+  }
 }
 
 final productController = NotifierProvider <ProductNotifier, List<Product>>(() => ProductNotifier());

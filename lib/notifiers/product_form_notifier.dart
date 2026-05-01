@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:selfcare_app/models/product_form_model.dart';
+import 'package:selfcare_app/models/product_model.dart';
+import 'package:selfcare_app/notifiers/product_notifier.dart';
 
 class ProductFormNotifier extends Notifier<ProductForm>{
   @override
@@ -53,15 +55,28 @@ class ProductFormNotifier extends Notifier<ProductForm>{
     state = ProductForm.initial;
   }
  
-  Future <void> submit() async {
-    if(!validate()) return;
+  Future <bool> submit() async {
+    if(!validate()) return false;
 
     state = state.copyWith(isSubmitting: true);
+
+    final product = Product(
+      id: DateTime.now().millisecondsSinceEpoch,
+      name: state.name,
+      categoryId: state.categoryId!,
+      typeId: state.typeId!,
+      size: int.parse(state.size),
+      sizeUnitId: state.sizeUnitId!
+    );
 
     try {
       await Future.delayed(const Duration(seconds: 2));
 
+      ref.watch(productController.notifier).addProducts(product);
+
+      return true;
     } catch (e) {
+      return false;
       // later when API ready
     } finally {
       reset();
@@ -69,6 +84,6 @@ class ProductFormNotifier extends Notifier<ProductForm>{
   }
 }
 
-final productFormController = NotifierProvider<ProductFormNotifier, ProductForm>(() {
+final productFormController = NotifierProvider.autoDispose<ProductFormNotifier, ProductForm>(() {
   return ProductFormNotifier();
 });

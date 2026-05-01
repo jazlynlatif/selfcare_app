@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:selfcare_app/models/view_product_model.dart';
 import 'package:selfcare_app/notifiers/product_form_notifier.dart';
 import 'package:selfcare_app/providers/category_provider.dart';
@@ -279,7 +280,8 @@ class _ProductFormState extends ConsumerState<ProductForm> {
                 onPressed: () async {
                   try {
                     if(!formState.isSubmitting) {
-                      formAction.submit();
+                      final success = await formAction.submit();
+                      if(success && mounted) context.pop();
                     }
                   } catch (er) {}
                 },
